@@ -1,6 +1,10 @@
 [mysqld]
 innodb_buffer_pool_size = 256M
-innodb_log_file_size 	= 10M
+innodb_additional_mem_pool_size=20M
+innodb_log_file_size 	= 64M
 innodb_flush_method 	= O_DIRECT
 innodb_log_buffer_size  = 8M
-innodb_log_file_size    = 5M
+
+slow-query-log-file=/var/log/mysql/slow-queries.log
+slow-query-log = TRUE
+log-queries-not-using-indexes
