@@ -3,8 +3,7 @@
 (setq next-line-add-newlines nil)
 (setq delete-trailing-lines t)
 
-(setq x-select-enable-clipboard t)
-(setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
+(define-key global-map (kbd "RET") 'newline-and-indent)
 
 ;;tabs are evil, don't want tabs
 (setq-default indent-tabs-mode nil)
@@ -24,6 +23,11 @@
 (auto-fill-mode -1)
 (remove-hook 'text-mode-hook #'turn-on-auto-fill)
 
+;if you have auto-complete mode installed
+(require 'auto-complete-config)
+(ac-config-default)
+
+;;applicable only for emacs 24 and above or if emacs packaging system is present
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
