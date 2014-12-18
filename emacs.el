@@ -15,6 +15,9 @@
 (setq-default css-mode-indent-depth 2)
 (setq-default js-indent-level 2)
 
+;disable automatic scss compilation
+(setq scss-compile-at-save nil)
+
 (setq locale-coding-system 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
