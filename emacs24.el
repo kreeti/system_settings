@@ -45,18 +45,18 @@
 ;; * json-mode
 ;; * csv-mode
 ;; * yaml-mode
-;; * flymake-ruby -- flymake is for syntax checking on the go
 ;; * rjsx-mode -- react files
 ;; * js2-mode -- ES6 mode
 ;; * js2-refactor - ES mode
-;; * rubocopy
+;; * rubocop
 ;; * flycheck
+;; * yasnippet
+;; * yasnippet-snippets
 ;; etc
 ;;
-;; Install eslint for flychecker
-;; sudo npm install eslint -g
+;; To ensure that flycheck detects rubocop, start emacs from you working directory
+;; emacs &
 ;;
-
 ;; use rjsx-mode for .js files
 (add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
 
@@ -75,5 +75,30 @@
 (flycheck-add-mode 'javascript-eslint 'rjsx-mode)
 (flycheck-add-mode 'javascript-eslint 'js2-mode)
 
+;; This code looks for a node_modules directory in any parent of the buffer's
+;; directory and configures Flycheck to use an eslint executable from that
+;; directory if any exists.
+
+(defun my/use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+
 ;; turn on company mode globally
 (add-hook 'after-init-hook 'global-company-mode)
+
+
+(yas-reload-all)
+(add-hook 'prog-mode-hook #'yas-minor-mode)
+
+
+;; git clone git@github.com:ssinghi/react-es6-snippets-emacs ~/.emacs.d/react-es6-snippets
+;; (add-to-list 'load-path "~/.emacs.d/react-es6-snippets")
+;; (require 'react-es6-snippets)
